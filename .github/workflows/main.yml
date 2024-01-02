@@ -1,0 +1,24 @@
+jobs:
+  build:
+    runs-on: macos-latest-xlarge
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3'
+      - name: checkout-krita
+        run: >-
+          git clone -b v5.2.0 https://invent.kde.org/graphics/krita.git;
+          echo "add_subdirectory( krita-ai-tools )" >> krita/plugins/CMakeLists.txt;
+          sed -i "" "/ext_pkgconfig/d" krita/packaging/macos/osxbuild.sh
+      - uses: actions/checkout@v2
+        with:
+          path: ./krita/plugins/krita-ai-tools
+      - name: build-krita
+        run: >-
+          export BUILDROOT=$(pwd);
+          export PATH=/Applications/CMake.app/Contents/bin:${BUILDROOT}/i/bin/:${PATH};
+          ./krita/packaging/macos/osxbuild.sh builddeps;
+          ./krita/packaging/macos/osxbuild.sh buildinstall
+
+on: push
