@@ -8,7 +8,7 @@ jobs:
           python-version: '3'
       - name: checkout-krita
         run: >-
-          git clone -b v5.2.0 https://invent.kde.org/graphics/krita.git;
+          git clone -b v5.2.2 https://invent.kde.org/graphics/krita.git;
           echo "add_subdirectory( krita-ai-tools )" >> krita/plugins/CMakeLists.txt;
           sed -i "" "/ext_pkgconfig/d" krita/packaging/macos/osxbuild.sh
       - uses: actions/checkout@v2
